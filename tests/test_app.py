@@ -71,6 +71,12 @@ def reset_activities():
             "schedule": "Fridays, 3:30 PM - 5:30 PM",
             "max_participants": 18,
             "participants": ["mia@mergington.edu", "liam@mergington.edu"]
+        },
+        "Manga Maniacs": {
+            "description": "Explore the fantastic stories of the most interesting characters from Japanese Manga (graphic novels).",
+            "schedule": "Tuesdays at 7pm",
+            "max_participants": 15,
+            "participants": []
         }
     })
 
@@ -93,9 +99,10 @@ class TestActivitiesEndpoint:
         response = client.get("/activities")
         assert response.status_code == 200
         data = response.json()
-        assert len(data) == 9
+        assert len(data) == 10
         assert "Chess Club" in data
         assert "Programming Class" in data
+        assert "Manga Maniacs" in data
 
     def test_activities_have_required_fields(self, client):
         """Test that each activity has required fields"""
@@ -108,6 +115,18 @@ class TestActivitiesEndpoint:
             assert "max_participants" in activity_details
             assert "participants" in activity_details
             assert isinstance(activity_details["participants"], list)
+
+    def test_manga_maniacs_activity(self, client):
+        """Test that Manga Maniacs activity has correct properties"""
+        response = client.get("/activities")
+        data = response.json()
+        
+        assert "Manga Maniacs" in data
+        manga_maniacs = data["Manga Maniacs"]
+        assert manga_maniacs["description"] == "Explore the fantastic stories of the most interesting characters from Japanese Manga (graphic novels)."
+        assert manga_maniacs["schedule"] == "Tuesdays at 7pm"
+        assert manga_maniacs["max_participants"] == 15
+        assert manga_maniacs["participants"] == []
 
 
 class TestSignupEndpoint:
