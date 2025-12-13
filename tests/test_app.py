@@ -71,6 +71,12 @@ def reset_activities():
             "schedule": "Fridays, 3:30 PM - 5:30 PM",
             "max_participants": 18,
             "participants": ["mia@mergington.edu", "liam@mergington.edu"]
+        },
+        "Manga Maniacs": {
+            "description": "Explore the fantastic stories of the most interesting characters from Japanese Manga (graphic novels).",
+            "schedule": "Tuesdays at 7pm",
+            "max_participants": 15,
+            "participants": []
         }
     })
 
@@ -93,7 +99,7 @@ class TestActivitiesEndpoint:
         response = client.get("/activities")
         assert response.status_code == 200
         data = response.json()
-        assert len(data) == 9
+        assert len(data) == 10
         assert "Chess Club" in data
         assert "Programming Class" in data
 
